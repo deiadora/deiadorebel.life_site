@@ -8,7 +8,7 @@
  
 ### what this is
  
-The publishing home of The Book of Shadows series — five first-person novellas written between 2016 and 2019, sold in person at farmer's markets and music festivals, and now finding their way back into the world with fresh eyes and considerably more awareness.
+The publishing home of the Field Notes series — five first-person novellas written between 2016 and 2019, sold in person at farmer's markets and music festivals, and now finding their way back into the world with fresh eyes and considerably more awareness.
  
 Each book is a first-person journey through a different principle captured in the title. Each chapter has a poem. Each poem is also a song — available at [deiadorebel.com](https://deiadorebel.com).
  
@@ -70,11 +70,11 @@ These books were written from inside that compression. They are what the torus d
 ### hero
  
 ```
-kicker:     deiadorebel.life · the book of shadows series
+kicker:     deiadorebel.life · the Field Notes series
             · first-person spiritual satire
 h1:         Fiction for the quantum being you already are.
             (em italic: "you already are.")
-subhead 1:  The Book of Shadows: first-person spiritual satire,
+subhead 1:  the Field Notes: first-person spiritual satire,
             a coherent system in a decoherent multiverse.
             These journeys began in 2016 and haven't really stopped.
 subhead 2:  Be a full-length mirror, not a compact.
