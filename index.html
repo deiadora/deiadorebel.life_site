@@ -56,9 +56,9 @@
       --line:       rgba(240,237,230,.1);
     }
 
-    [data-theme="dark"] .nav         { background: #010003; }
-    [data-theme="dark"] .card        { background: #151515; }
-    [data-theme="dark"] .book-tile   { background: #151515; }
+    [data-theme="dark"] .nav          { background: #010003; }
+    [data-theme="dark"] .card         { background: #151515; }
+    [data-theme="dark"] .book-tile    { background: #151515; }
     [data-theme="dark"] .connect-card { background: #151515; }
 
     [data-theme="light"] {
@@ -81,7 +81,7 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
-    body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; transition: background .25s, color .25s; }
 
     /* ─── nav ─── */
     .nav {
@@ -452,7 +452,7 @@
       <a href="#about">about</a>
       <a href="#books">the books</a>
       <a href="#connect" class="pill">get in touch</a>
-      <button class="theme-toggle" id="themeToggle" aria-label="toggle theme">🌙</button>
+      <button class="theme-toggle" id="themeToggle" aria-label="toggle colour mode">🌙</button>
     </nav>
   </header>
 
@@ -513,41 +513,43 @@
 
     <!-- ─── books ─── -->
     <section id="books">
+      <!-- future anchor: pending — update all tile statuses and add read/buy links as each novella publishes -->
       <p class="section-label">field notes series</p>
 
       <div class="books-grid">
 
         <div class="book-tile">
-          <p class="year">novella i · 2016</p>
+          <p class="year">novella i · 2016 · in composition</p>
           <h3>Light Travel and the Timelessness of Now</h3>
           <p class="poems">8 chapters · 8 poems · 8 songs</p>
-          <p class="status">coming soon</p>
+          <p class="status">becoming</p>
         </div>
 
         <div class="book-tile">
-          <p class="year">novella ii · 2017</p>
+          <p class="year">novella ii · 2017 · in composition</p>
           <h3>The Goddess Algorithm and the Union of the Mirrored Self</h3>
           <p class="poems">8 chapters · 8 poems · 8 songs</p>
-          <p class="status">coming soon</p>
+          <p class="status">becoming</p>
         </div>
 
         <div class="book-tile">
-          <p class="year">novella iii · 2018</p>
+          <p class="year">novella iii · 2018 · in composition</p>
           <h3>Quantum Divinity and the Separation of Two Worlds</h3>
           <p class="poems">8 chapters · 8 poems · 8 songs</p>
-          <p class="status">coming soon</p>
+          <p class="status">becoming</p>
         </div>
 
         <div class="book-tile">
-          <p class="year">novella iv · 2019</p>
+          <p class="year">novella iv · 2019 · in composition</p>
           <h3>The Other Me and the Life/Death of the Self</h3>
           <p class="poems">8 chapters · 8 poems · 8 songs</p>
-          <p class="status">coming soon</p>
+          <p class="status">becoming</p>
         </div>
 
       </div>
 
       <!-- fifth book — featured -->
+      <!-- future anchor: pending — update status and add read/buy link on publication -->
       <div class="book-featured">
         <p class="year">novella v · in progress · the return</p>
         <h3>Rebel Evolve and the Return Home</h3>
@@ -557,7 +559,7 @@
           The coherent system has done a few more laps of the decoherent multiverse
           since 2019 and has notes.
         </p>
-        <p class="status">coming soon · worth the wait</p>
+        <p class="status">becoming · worth the wait</p>
       </div>
 
     </section>
@@ -599,17 +601,48 @@
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-    const toggle = document.getElementById("themeToggle");
-    const saved = localStorage.getItem("theme-deiadorebel-life") || "dark";
-    document.documentElement.setAttribute("data-theme", saved);
-    toggle.textContent = saved === "dark" ? "🌙" : "☀️";
 
+    const toggle  = document.getElementById("themeToggle");
+    const root    = document.documentElement;
+    const STORE   = "qc-theme"; // shared key across all ecosystem sites
+
+    // Detect system preference
+    const sysDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+    function resolveTheme() {
+      const saved = localStorage.getItem(STORE);
+      if (saved) return saved;                     // explicit user override
+      return sysDark.matches ? "dark" : "light";   // follow system
+    }
+
+    function applyTheme(theme) {
+      root.setAttribute("data-theme", theme);
+      toggle.textContent = theme === "dark" ? "🌙" : "☀️";
+      toggle.setAttribute("aria-label", theme === "dark" ? "switch to light mode" : "switch to dark mode");
+    }
+
+    // Initial paint
+    applyTheme(resolveTheme());
+
+    // Toggle click — cycle: override opposite → clear override (return to system)
     toggle.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme");
+      const current = root.getAttribute("data-theme");
+      const sysTheme = sysDark.matches ? "dark" : "light";
       const next = current === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme-deiadorebel-life", next);
-      toggle.textContent = next === "dark" ? "🌙" : "☀️";
+
+      if (next === sysTheme) {
+        localStorage.removeItem(STORE);
+      } else {
+        localStorage.setItem(STORE, next);
+      }
+      applyTheme(next);
+    });
+
+    // Follow OS schedule changes if no manual override is set
+    sysDark.addEventListener("change", () => {
+      if (!localStorage.getItem(STORE)) {
+        applyTheme(sysDark.matches ? "dark" : "light");
+      }
     });
   </script>
 </body>
